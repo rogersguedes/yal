@@ -1,0 +1,43 @@
+_TARGET_ARCH=%%Platform%% #FIXME handle x86 <-> Win32
+_TARGET_CFG=Debug
+_SRC_DIR=.
+_BUILD_DIR=build
+_GENERATOR="Visual Studio 17 2022"
+_VERBOSE=normal # q[uiet], m[inimal], n[ormal] (default), d[etailed], and diag[nostic].
+_PROJECT_NAME=yal_proj
+_LIB_NAME=yal
+_LIB_EXT=lib
+_LIB_SRCS=src/single_list.c
+
+$(_BUILD_DIR):
+    md $(_BUILD_DIR)
+    @echo '$@' finished.
+
+$(_BUILD_DIR)/$(_PROJECT_NAME).sln: $(_BUILD_DIR)
+    cmake -S $(_SRC_DIR) -B $(_BUILD_DIR) -DYAL_LOCK:STRING=FREERTOS
+    @echo '$@' finished.
+
+$(_BUILD_DIR)/$(_TARGET_CFG)/$(_LIB_NAME).$(_LIB_EXT): $(_BUILD_DIR)/$(_PROJECT_NAME).sln $(_LIB_SRCS)
+    cmake --build $(_BUILD_DIR) --config $(_TARGET_CFG) -- /verbosity:$(_VERBOSE)
+    @echo '$@' finished.
+
+lib: $(_BUILD_DIR)/$(_TARGET_CFG)/$(_LIB_NAME).$(_LIB_EXT)
+
+all: lib
+    @echo '$@' finished.
+
+clean_lib:
+    cmake --build $(_BUILD_DIR) --config $(_TARGET_CFG) --target clean -- /verbosity:$(_VERBOSE)
+    @echo '$@' finished.
+
+clean_sln: clean_lib
+    del /F /Q /S $(_BUILD_DIR)\* || exit 0
+    for /D %%i in ("$(_BUILD_DIR)\*") do RD /S /Q "%%i" || exit 0
+    @echo '$@' finished.
+
+clean_build_dir: # clean_sln
+    rmdir /s /q $(_BUILD_DIR) || exit 0
+    @echo '$@' finished.
+
+clean: clean_build_dir
+    @echo '$@' finished.

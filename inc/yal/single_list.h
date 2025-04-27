@@ -1,6 +1,6 @@
 
-#ifndef __yal_slist_H__
-#define __yal_slist_H__
+#ifndef __yal_single_list_H__
+#define __yal_single_list_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,7 +13,7 @@ typedef struct yal_slist_node
   struct yal_slist_node *next;
 } yal_slist_node_t;
 
-typedef struct single_list
+typedef struct yal_single_list
 {
   yal_slist_node_t sentinel;
 } yal_slist_t;

@@ -1,4 +1,5 @@
 #include <yal/single_list.h>
+#include <yal/lock.h>
 
 #include <stddef.h>
 #include <errno.h>
