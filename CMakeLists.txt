@@ -10,21 +10,7 @@ add_library(yal STATIC src/single_list.c)
 target_include_directories(yal PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/inc"
 )
-option(YAL_LOCK "Specifies locking mechanism.")
-if(YAL_LOCK STREQUAL "POSIX")
-    target_compile_definitions(yal PRIVATE "YAL_LOCK_POSIX")
-elseif(YAL_LOCK STREQUAL "FREERTOS")
-    target_compile_definitions(yal PRIVATE "YAL_LOCK_FREERTOS")
-else()
-message(FATAL_ERROR "Locking mechanism is not set. Please specify it from top-level CMake file (example):\n"
-    " set(YAL_LOCK POSIX CACHE STRING \"Specifies the locking mechanism used by yal lib\")\n"
-    " or from CMake command line option:\n"
-    " -DYAL_LOCK=POSIX\n"
-    " \n"
-    " Available options:\n"
-    " POSIX    Use POSIX 'pthread_mutex_t' as locking mechanism.\n"
-    " FREERTOS Use FreeRTOS 'SemaphoreHandle_t' as locking mechanism.")
-endif()
+option(YAL_THREAD "Specifies locking mechanism.")
 # } Library
 
 # Examples {
@@ -35,6 +21,32 @@ target_include_directories(slist PUBLIC
 target_link_libraries(slist yal)
 # } Examples
 
+# Common {
+if(YAL_THREAD STREQUAL "POSIX")
+    target_compile_definitions(yal PRIVATE "YAL_THREAD_POSIX")
+    target_compile_definitions(slist PRIVATE "YAL_THREAD_POSIX")
+elseif(YAL_THREAD STREQUAL "FREERTOS")
+    target_compile_definitions(yal PRIVATE "YAL_THREAD_FREERTOS")
+    target_compile_definitions(slist PRIVATE "YAL_THREAD_FREERTOS")
+elseif(YAL_THREAD STREQUAL "MSVC")
+    target_compile_definitions(yal PRIVATE "YAL_THREAD_MSVC")
+    target_compile_definitions(slist PRIVATE "YAL_THREAD_MSVC")
+elseif(YAL_THREAD STREQUAL "NONE")
+    target_compile_definitions(yal PRIVATE "YAL_THREAD_NONE")
+    target_compile_definitions(slist PRIVATE "YAL_THREAD_NONE")
+else()
+    message(FATAL_ERROR "Locking mechanism is not set. Please specify it from top-level CMake file (example):\n"
+    " set(YAL_THREAD POSIX CACHE STRING \"Specifies the locking mechanism used by yal lib\")\n"
+    " or from CMake command line option:\n"
+    " -DYAL_THREAD=POSIX\n"
+    " \n"
+    " Available options:\n"
+    " POSIX    Use POSIX 'pthread_mutex_t' as locking mechanism.\n"
+    " FREERTOS Use FreeRTOS 'SemaphoreHandle_t' as locking mechanism.\n"
+    " MSVC     Use MSVC 'HANDLE' (CreateMutex) as locking mechanism.\n"
+    " NONE     Don't use any locking mechanism.")
+endif()
+# } Common
 
 # add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/..")
 # 

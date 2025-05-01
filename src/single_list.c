@@ -1,5 +1,5 @@
 #include <yal/single_list.h>
-#include <yal/lock.h>
+#include <yal/mutex.h>
 
 #include <stddef.h>
 #include <errno.h>
@@ -15,7 +15,7 @@ static inline yal_slist_node_t *remove_next(yal_slist_node_t *previous)
   yal_slist_node_t *next = previous->next;
   if (next)
   {
-    __atomic_write(&previous->next, next->next);
+    //__atomic_write(&previous->next, next->next);
     next->next = NULL;
   }
   return next;
@@ -24,10 +24,19 @@ static inline yal_slist_node_t *remove_next(yal_slist_node_t *previous)
 
 int yal_slist_init(yal_slist_t *list)
 {
+  int result;
   if (list == NULL)
     return -EINVAL;
+  result = yal_mutex_init(&list->mutex);
+  if(result){
+    return result;
+  }
   
-  return yal_slist_node_init(&list->sentinel);
+  result = yal_slist_node_init(&list->sentinel);
+  if(result){
+     yal_mutex_deinit(&list->mutex);
+  }
+  return result;
 }
 
 int yal_slist_destroy(yal_slist_t *list)
@@ -35,7 +44,7 @@ int yal_slist_destroy(yal_slist_t *list)
   if (list == NULL)
     return -EINVAL;
 
-  return yal_slist_node_destroy(&list->sentinel);
+  return yal_mutex_deinit(&list->mutex) || yal_slist_node_destroy(&list->sentinel);
 }
 
 

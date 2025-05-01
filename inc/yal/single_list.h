@@ -7,6 +7,7 @@ extern "C" {
 #endif
 
 #include <stddef.h>
+#include <yal/mutex.h>
 
 typedef struct yal_slist_node
 {
@@ -15,6 +16,7 @@ typedef struct yal_slist_node
 
 typedef struct yal_single_list
 {
+  yal_mutex_t mutex; 
   yal_slist_node_t sentinel;
 } yal_slist_t;
 

@@ -14,7 +14,7 @@ $(_BUILD_DIR):
     @echo '$@' finished.
 
 $(_BUILD_DIR)/$(_PROJECT_NAME).sln: $(_BUILD_DIR)
-    cmake -S $(_SRC_DIR) -B $(_BUILD_DIR) -DYAL_LOCK:STRING=FREERTOS
+    cmake -S $(_SRC_DIR) -B $(_BUILD_DIR) -DYAL_THREAD:STRING=MSVC
     @echo '$@' finished.
 
 $(_BUILD_DIR)/$(_TARGET_CFG)/$(_LIB_NAME).$(_LIB_EXT): $(_BUILD_DIR)/$(_PROJECT_NAME).sln $(_LIB_SRCS)
