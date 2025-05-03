@@ -23,7 +23,7 @@ int yal_slist_init(yal_slist_t* list)
 {
     int result;
     if (list == NULL) {
-        return -EINVAL;
+        return EINVAL;
     }
     result = yal_mutex_init(&list->mutex);
     if (result) {
@@ -40,7 +40,7 @@ int yal_slist_init(yal_slist_t* list)
 int yal_slist_destroy(yal_slist_t* list)
 {
     if (list == NULL) {
-        return -EINVAL;
+        return EINVAL;
     }
 
     return yal_mutex_deinit(&list->mutex) || yal_slist_node_destroy(&list->sentinel);
@@ -49,7 +49,7 @@ int yal_slist_destroy(yal_slist_t* list)
 int yal_slist_node_init(yal_slist_node_t* node)
 {
     if (node == NULL) {
-        return -EINVAL;
+        return EINVAL;
     }
 
     node->next = NULL;
@@ -59,7 +59,7 @@ int yal_slist_node_init(yal_slist_node_t* node)
 int yal_slist_node_destroy(yal_slist_node_t* node)
 {
     if (node == NULL) {
-        return -EINVAL;
+        return EINVAL;
     }
 
     node->next = NULL;
@@ -69,7 +69,7 @@ int yal_slist_node_destroy(yal_slist_node_t* node)
 int yal_slist_add_head(yal_slist_t* list, yal_slist_node_t* node)
 {
     if (list == NULL || node == NULL) {
-        return -EINVAL;
+        return EINVAL;
     }
 
     add_next(&list->sentinel, node);
@@ -79,7 +79,7 @@ int yal_slist_add_head(yal_slist_t* list, yal_slist_node_t* node)
 int yal_slist_add_tail(yal_slist_t* list, yal_slist_node_t* node)
 {
     if (list == NULL || node == NULL) {
-        return -EINVAL;
+        return EINVAL;
     }
 
     yal_slist_node_t* tmp_node = &list->sentinel;
@@ -95,7 +95,7 @@ int yal_slist_add_tail(yal_slist_t* list, yal_slist_node_t* node)
 int yal_slist_add_after(yal_slist_t* list, yal_slist_node_t* previous, yal_slist_node_t* node)
 {
     if (list == NULL || node == NULL) {
-        return -EINVAL;
+        return EINVAL;
     }
 
     if (previous == NULL) {
@@ -109,7 +109,7 @@ int yal_slist_add_after(yal_slist_t* list, yal_slist_node_t* previous, yal_slist
 int yal_slist_add_before(yal_slist_t* list, yal_slist_node_t* next, yal_slist_node_t* node)
 {
     if (list == NULL || node == NULL) {
-        return -EINVAL;
+        return EINVAL;
     }
 
     if (next == NULL) {
@@ -123,7 +123,7 @@ int yal_slist_add_before(yal_slist_t* list, yal_slist_node_t* next, yal_slist_no
     }
 
     if (tmp_node->next == NULL) {
-        return -ENODATA;
+        return ENODATA;
     }
 
     add_next(tmp_node, node);
