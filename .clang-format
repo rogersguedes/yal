@@ -15,12 +15,12 @@
 # Use space for indenting continuations (lining up long statements broken
 # into several lines.
 #
-UseTab: ForIndentation
-TabWidth: 8
+UseTab: Never
+TabWidth: 4
 IndentWidth: 4
-ContinuationIndentWidth: 8
+ContinuationIndentWidth: 4
 
-ColumnLimit: 80
+ColumnLimit: 120
 
 # C/C++ Language specifics
 #
@@ -106,7 +106,7 @@ AlignOperands:  AlignAfterOperator
 #   #endif
 #   #endif
 #
-IndentPPDirectives: None
+IndentPPDirectives: AfterHash
 
 # Always place function bodies on their own lines because
 # it makes a mess when some are on the same line and others are
