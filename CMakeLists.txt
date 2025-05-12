@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.27.4)
+project(yal_proj C)
 set(CMAKE_C_STANDARD 99)
-project(yal_proj)
+# project(yal_proj)
 
 # Library {
 add_library(yal STATIC src/single_list.c)
@@ -15,6 +16,12 @@ option(YAL_THREAD "Specifies locking mechanism.")
 
 # Examples {
 add_executable(slist examples/slist.c)
+# set_source_files_properties
+# set_source_files_properties(examples/slist.c PROPERTIES LANGUAGE C)
+
+# add_compile_options target_compile_options
+# https://learn.microsoft.com/en-us/cpp/build/reference/std-specify-language-standard-version?view=msvc-170
+# target_compile_options(slist PRIVATE /std:c11)
 target_include_directories(slist PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/inc"
 )

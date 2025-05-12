@@ -50,6 +50,12 @@ yal_slist_node_t* yal_slist_get_tail(yal_slist_t* list);
 
 yal_slist_node_t* yal_slist_get_next_node(yal_slist_t* list, yal_slist_node_t* previous);
 
+#define yal_slist_for_each(__list, __current) \
+    for (yal_slist_node_t * __next, *__current_tmp = (__list)->sentinel.next; \
+         (__next = (__current_tmp ? __current_tmp->next : NULL)), \
+                                    (__current_tmp ? ((__current) = __current_tmp) : ((__current) = NULL)); \
+         __current_tmp = __next)
+
 #ifdef __cplusplus
 }
 #endif
